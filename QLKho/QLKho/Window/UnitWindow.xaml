@@ -1,0 +1,90 @@
+﻿<Window x:Class="QLKho.UnitWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QLKho"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:uc="clr-namespace:QLKho.UserControls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        x:Name="window"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        FontSize="12"
+        Icon="/Assets/logo.png"
+        Title="Đơn vị tính"  Height="800" Width="1500"
+        DataContext="{StaticResource UnitViewModel}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition ></RowDefinition>
+        </Grid.RowDefinitions>
+        <!--Nhap thong tin-->
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <materialDesign:Card Margin="5">
+                    <StackPanel>
+                        <TextBox
+                        Margin="5"
+                        Width="auto"
+                        materialDesign:HintAssist.Hint="Tên đơn vị"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    ></TextBox>
+                    </StackPanel>
+                </materialDesign:Card>
+            </Grid>
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Background="#01579b"
+                        Width="100"
+                        Content="Thêm"
+                        Margin="10"
+                        Command="{Binding AddUnitCommand}"
+                      >
+                    </Button>
+                    <Button
+                        Background="#01579b"
+                        Width="100"
+                        Content="Sửa"
+                         Margin="10"
+                         Command="{Binding EditUnitCommand}"
+                      >
+                    </Button>
+                    <Button
+                        Background="#b71c1c"
+                        Width="100"
+                        Content="Xóa"
+                         Margin="10"
+                      >
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+
+
+        <!--List input-->
+        <Grid Grid.Row="1">
+            <materialDesign:Card  Margin="5">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ListView ItemsSource="{Binding List, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedItem,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}"></GridViewColumn>
+                                <GridViewColumn Header="Tên đơn vị đo" DisplayMemberBinding="{Binding DisplayName}"></GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </ScrollViewer>
+            </materialDesign:Card>
+
+        </Grid>
+    </Grid>
+</Window>

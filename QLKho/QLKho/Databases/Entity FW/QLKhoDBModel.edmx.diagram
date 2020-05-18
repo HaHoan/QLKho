@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d45367269bd54765b2218306c75fc2d8" Name="Diagram1">
+        <EntityTypeShape EntityType="QLKHOModel.Customer" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKHOModel.Input" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKHOModel.InputInfo" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKHOModel.OutputInfo" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKHOModel.Output" Width="1.5" PointX="5.25" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKHOModel.Product" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKHOModel.Suplier" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKHOModel.Unit" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
+        <AssociationConnector Association="QLKHOModel.FK__OutputInf__IdCus__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKHOModel.FK__InputInfo__IdInp__1DE57479" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKHOModel.FK__InputInfo__IdPro__1ED998B2" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKHOModel.FK__OutputInf__IdInp__25869641" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKHOModel.FK__OutputInf__IdOut__267ABA7A" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKHOModel.FK__OutputInf__IdPro__24927208" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKHOModel.FK__Product__IdSupli__173876EA" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKHOModel.FK__Product__IdUnit__164452B1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:QLKho.Resources"
+                    xmlns:viewmodel="clr-namespace:QLKho.ViewModel">
+    <viewmodel:MainViewModel x:Key="MainViewModel"></viewmodel:MainViewModel>
+    <viewmodel:InputViewModel x:Key="InputViewModel"></viewmodel:InputViewModel>
+    <viewmodel:OutputViewModel x:Key="OutputViewModel"></viewmodel:OutputViewModel>
+    <viewmodel:UnitViewModel x:Key="UnitViewModel"></viewmodel:UnitViewModel>
+    <viewmodel:ProductViewModel x:Key="ProductViewModel"></viewmodel:ProductViewModel>
+    <viewmodel:SuplierViewModel x:Key="SuplierViewModel"></viewmodel:SuplierViewModel>
+    <viewmodel:CustomerViewModel x:Key="CustomerViewModel"></viewmodel:CustomerViewModel>
+
+</ResourceDictionary>

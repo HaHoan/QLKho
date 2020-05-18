@@ -1,0 +1,227 @@
+﻿<Window x:Class="QLKho.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QLKho"
+        mc:Ignorable="d"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:uc="clr-namespace:QLKho.UserControls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        x:Name="window"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        FontSize="15"
+        Icon="/Assets/logo.png"
+        
+        Title="Phần mềm quản lý kho" Height="800" Width="1500"
+        DataContext="{StaticResource MainViewModel}"
+        >
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction 
+                Command="{Binding Loaded}"
+              />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition ></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!--Menu-->
+            <Grid Grid.Row="1">
+                <materialDesign:ColorZone>
+                    <StackPanel Orientation="Horizontal" Background="#01579b">
+                        <RadioButton  Style="{StaticResource MaterialDesignTabRadioButton}"
+                                      Margin="4"
+                                      IsChecked="False"
+                                      Content="Nhập hàng"
+                                      Foreground="White"
+                                      Command="{Binding OpenInputCommand}"
+                                          />
+                        <RadioButton  Style="{StaticResource MaterialDesignTabRadioButton}"
+                                      Margin="4"
+                                      IsChecked="False"
+                                      Content="Xuất hàng"
+                                      Foreground="White"
+                                       Command="{Binding OpenOnputCommand}"
+                                      />
+                        <RadioButton  Style="{StaticResource MaterialDesignTabRadioButton}"
+                                      Margin="4"
+                                      IsChecked="False"
+                                      Content="Sản phẩm"
+                                      Foreground="White"
+                                      Command="{Binding OpenProductCommand}"
+                                      />
+                        <RadioButton  Style="{StaticResource MaterialDesignTabRadioButton}"
+                                      Margin="4"
+                                      IsChecked="False"
+                                      Content="Đơn vị tính"
+                                      Foreground="White"
+                                      Command="{Binding OpenUnitCommand}"
+                                      />
+                        <RadioButton  Style="{StaticResource MaterialDesignTabRadioButton}"
+                                      Margin="4"
+                                      IsChecked="False"
+                                      Content="Nhà cung cấp"
+                                      Foreground="White"
+                                      Command="{Binding OpenSuplierCommand}"
+                                      />
+                        <RadioButton  Style="{StaticResource MaterialDesignTabRadioButton}"
+                                      Margin="4"
+                                      IsChecked="False"
+                                      Content="Khách hàng"
+                                      Foreground="White"
+                                      Command="{Binding OpenCustomerCommand}"/>
+
+                    </StackPanel>
+
+                </materialDesign:ColorZone>
+            </Grid>
+
+            <!-- Total Invetory -->
+            <Grid Grid.Row="2">
+                <materialDesign:Card Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <DatePicker
+                                    Width="100"
+                                    materialDesign:HintAssist.Hint="Từ ngày"
+                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    Margin="10"/>
+                        <DatePicker
+                                    Width="100"
+                                    materialDesign:HintAssist.Hint="Đến ngày"
+                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
+                                    Margin="10"/>
+                        <Button
+                                    Width="100"
+                                    Content="Lọc"
+                                    Margin="10"
+                                    Background="#01579b"
+                                    >
+                        </Button>
+                        <materialDesign:Card
+                                        Background="#03a9f4"
+                                        Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                        Padding="0"
+                                        Margin="10"
+                                        Width="120">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Margin="16 16 16 4"
+                                           >
+                                              Tổng nhập
+                                </TextBlock>
+                                <Separator
+                                            Grid.Row="1"
+                                            Style="{StaticResource MaterialDesignLightSeparator}" />
+                                <TextBlock
+                                           Grid.Row="2"
+                                           Margin="16 0 16 8"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           >
+                                                 1000
+                                </TextBlock>
+
+                            </Grid>
+                        </materialDesign:Card>
+                        <materialDesign:Card
+                                        Background="#03a9f4"
+                                        Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                        Padding="0"
+                                        Margin="10"
+                                        Width="120">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Margin="16 16 16 4"
+                                           >
+                                              Tổng nhập
+                                </TextBlock>
+                                <Separator
+                                            Grid.Row="1"
+                                            Style="{StaticResource MaterialDesignLightSeparator}" 
+                                    />
+                                <TextBlock
+                                           Grid.Row="2"
+                                           Margin="16 0 16 8"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           >
+                                                 1000
+                                </TextBlock>
+
+                            </Grid>
+                        </materialDesign:Card>
+                        <materialDesign:Card
+                                        Background="#03a9f4"
+                                        Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                        Padding="0"
+                                        Margin="10"
+                                        Width="120">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Margin="16 16 16 4"
+                                           >
+                                              Tổng tồn kho
+                                </TextBlock>
+                                <Separator
+                                            Grid.Row="1"
+                                            Style="{StaticResource MaterialDesignLightSeparator}" />
+                                <TextBlock
+                                           Grid.Row="2"
+                                           Margin="16 0 16 8"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           >
+                                                 1000
+                                </TextBlock>
+
+                            </Grid>
+                        </materialDesign:Card>
+                    </StackPanel>
+
+
+
+                </materialDesign:Card>
+            </Grid>
+
+            <!--List Inventory-->
+            <Grid Grid.Row="3">
+                <materialDesign:Card Margin="5" VerticalAlignment="Stretch">
+                    <ListView VerticalAlignment="Stretch">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="STT"></GridViewColumn>
+                                <GridViewColumn Header="Tên sản phẩm"></GridViewColumn>
+                                <GridViewColumn Header="Số lượng tồn"></GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </materialDesign:Card>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
