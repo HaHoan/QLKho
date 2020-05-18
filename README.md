@@ -1,0 +1,2 @@
+# QLKho
+Quản lý Kho
