@@ -1,2 +1,2 @@
 # QLKho
-Phần mềm quản lý kho bla bla
+Phần mềm quản lý kho bla blavvvvv
