@@ -1,2 +1,2 @@
 # QLKho
-Quản lý Kho
+Phần mềm quản lý kho
