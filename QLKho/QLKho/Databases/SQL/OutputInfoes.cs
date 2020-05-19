@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace QLKho.Databases.SQL
 {
-   public class OutputInfoes : DbQuery
+    public class OutputInfoes : DbQuery
     {
         public override IEnumerable<object> Select()
         {
@@ -46,8 +46,8 @@ namespace QLKho.Databases.SQL
                     "inner join Product on Product.Id = InputInfo.IdProduct " +
                     "inner join Unit on Unit.Id = Product.IdUnit inner join Suplier on Suplier.Id = Product.IdSuplier " +
                     "inner join Outputs on Outputs.Id = OutputInfo.IdOutput " +
-                    "inner join Input on Input.Id = InputInfo.IdInput "+
-                    "inner join Customer on Customer.Id = OutputInfo.IdCustomer";
+                    "inner join Input on Input.Id = InputInfo.IdInput " +
+                    "left join Customer on Customer.Id = OutputInfo.IdCustomer";
                 SqlCommand command = new SqlCommand(sql, DataProvider.Instance.DB);
 
                 using (DbDataReader reader = command.ExecuteReader())
@@ -60,15 +60,19 @@ namespace QLKho.Databases.SQL
                             int IdInputInfo = reader.GetInt32(reader.GetOrdinal("IdInputInfo"));
                             int IdOutput = reader.GetInt32(reader.GetOrdinal("IdOutput"));
                             int Count = reader.GetInt32(reader.GetOrdinal("Count"));
-                            float OutputPrice = reader.GetFloat(reader.GetOrdinal("OutputPrice"));
-                            string States = reader.GetString(reader.GetOrdinal("States"));
-                            int IdCustomer = reader.GetInt32(reader.GetOrdinal("IdCustomer"));
+                            double OutputPrice = reader.GetDouble(reader.GetOrdinal("OutputPrice"));
+                            string States = reader[reader.GetOrdinal("States")] as string;
+                            int IdCustomer = 0;
+                            if (!reader.IsDBNull(reader.GetOrdinal("IdCustomer")))
+                            {
+                                IdCustomer = (int)reader[reader.GetOrdinal("IdCustomer")];
+                            }
                             int IdProduct = reader.GetInt32(reader.GetOrdinal("IdProduct"));
                             int IdInput = reader.GetInt32(reader.GetOrdinal("IdInput"));
                             int InputCount = reader.GetInt32(reader.GetOrdinal("InputCount"));
-                            float DefaultOutputPrice = reader.GetFloat(reader.GetOrdinal("DefaultOutputPrice"));
-                            float InputPrice = reader.GetFloat(reader.GetOrdinal("InputPrice"));
-                            string InputState = reader.GetString(reader.GetOrdinal("InputState"));
+                            double DefaultOutputPrice = reader.GetDouble(reader.GetOrdinal("DefaultOutputPrice"));
+                            double InputPrice = reader.GetDouble(reader.GetOrdinal("InputPrice"));
+                            string InputState = reader[reader.GetOrdinal("InputState")] as string;
 
                             string ProductName = reader.GetString(reader.GetOrdinal("ProductName"));
                             string BarCode = reader.GetString(reader.GetOrdinal("BarCode"));
@@ -78,70 +82,83 @@ namespace QLKho.Databases.SQL
                             string SuplierName = reader.GetString(reader.GetOrdinal("SuplierName"));
                             string Address = reader.GetString(reader.GetOrdinal("Address"));
                             string Phone = reader.GetString(reader.GetOrdinal("Phone"));
-                            string Email = reader.GetString(reader.GetOrdinal("Email"));
-                            string MoreInfo = reader.GetString(reader.GetOrdinal("MoreInfo"));
-                            string ProductStates = reader.GetString(reader.GetOrdinal("ProductStates"));
+                            string Email = reader[reader.GetOrdinal("Email")] as string;
+                            string MoreInfo = reader[reader.GetOrdinal("MoreInfo")] as string;
+                            string ProductStates = reader[reader.GetOrdinal("ProductStates")] as string;
                             DateTime ContractDate = reader.GetDateTime(reader.GetOrdinal("ContractDate"));
 
                             DateTime DateOutput = reader.GetDateTime(reader.GetOrdinal("DateOutput"));
                             DateTime DateInput = reader.GetDateTime(reader.GetOrdinal("DateInput"));
 
-                            string CustomerName = reader.GetString(reader.GetOrdinal("CustomerName"));
-                            string CustomerAddress = reader.GetString(reader.GetOrdinal("CustomerAddress"));
-                            string CustomerPhone = reader.GetString(reader.GetOrdinal("CustomerPhone"));
-                            string CustomerEmail = reader.GetString(reader.GetOrdinal("CustomerEmail"));
-                            string CustomerMoreInfo = reader.GetString(reader.GetOrdinal("CustomerMoreInfo"));
-
-                            list.Add(new OutputInfo()
-                            {   Id = Id,
+                            string CustomerName = reader[reader.GetOrdinal("CustomerName")] as string;
+                            string CustomerAddress = reader[reader.GetOrdinal("CustomerAddress")] as string;
+                            string CustomerPhone = reader[reader.GetOrdinal("CustomerPhone")] as string;
+                            string CustomerEmail = reader[reader.GetOrdinal("CustomerEmail")] as string;
+                            string CustomerMoreInfo = reader[reader.GetOrdinal("CustomerMoreInfo")] as string;
+                            OutputInfo outputInfo = new OutputInfo()
+                            {
+                                Id = Id,
                                 IdInputInfo = IdInputInfo,
                                 IdOutput = IdOutput,
-                                Count = Count ,
+                                Count = Count,
                                 OutputPrice = OutputPrice,
                                 States = States,
-                                IdCustomer = IdCustomer,
-                                InputInfo = new InputInfo() { Id = IdInputInfo,
-                                                              IdProduct = IdProduct,
-                                                              IdInput = IdInput ,
-                                                              Count = InputCount,
-                                                              InputPrice = InputPrice,
-                                                              OutputPrice = DefaultOutputPrice,
-                                                              States = InputState,
-                                                              Product = new Product()
-                                                              {
-                                                                Id = IdProduct,
-                                                                DisplayName = ProductName,
-                                                                BarCode = BarCode,
-                                                                IdUnit = IdUnit,
-                                                                IdSuplier = IdSuplier,
-                                                                States = ProductStates,
-                                                                Unit = new Unit()
+                                InputInfo = new InputInfo()
+                                {
+                                    Id = IdInputInfo,
+                                    IdProduct = IdProduct,
+                                    IdInput = IdInput,
+                                    Count = InputCount,
+                                    InputPrice = InputPrice,
+                                    OutputPrice = DefaultOutputPrice,
+                                    States = InputState,
+                                    Product = new Product()
                                     {
-                                        Id = IdUnit,
-                                        DisplayName = UnitName
+                                        Id = IdProduct,
+                                        DisplayName = ProductName,
+                                        BarCode = BarCode,
+                                        IdUnit = IdUnit,
+                                        IdSuplier = IdSuplier,
+                                        States = ProductStates,
+                                        Unit = new Unit()
+                                        {
+                                            Id = IdUnit,
+                                            DisplayName = UnitName
+                                        },
+                                        Suplier = new Suplier()
+                                        {
+                                            Id = IdSuplier,
+                                            DisplayName = SuplierName,
+                                            Address = Address,
+                                            Phone = Phone,
+                                            Email = Email,
+                                            MoreInfo = MoreInfo,
+                                            ContractDate = ContractDate
+                                        }
                                     },
-                                                                Suplier = new Suplier()
+                                    Input = new Input()
                                     {
-                                        Id = IdSuplier,
-                                        DisplayName = SuplierName,
-                                        Address = Address,
-                                        Phone = Phone,
-                                        Email = Email,
-                                        MoreInfo = MoreInfo,
-                                        ContractDate = ContractDate
+                                        Id = IdInput,
+                                        DateInput = DateInput
                                     }
-                                                              },
-                                                            Input = new Input() {
-                                                                    Id = IdInput,
-                                                                    DateInput = DateInput}
-                                                                },Customer = new Customer()
-                                                            {  Id = IdCustomer,
-                                                               DisplayName = CustomerName,
-                                                               Address = CustomerAddress,
-                                                               Email = CustomerEmail,
-                                                               Phone = CustomerPhone,
-                                                               MoreInfo = CustomerMoreInfo}
-                            } );
+                                },
+                                Output = new Output() { Id = Id, DateOutput = DateOutput }
+                            };
+                            if(IdCustomer > 0)
+                            {
+                                Customer Customer = new Customer()
+                                {
+                                    Id = IdCustomer,
+                                    DisplayName = CustomerName,
+                                    Address = CustomerAddress,
+                                    Email = CustomerEmail,
+                                    Phone = CustomerPhone,
+                                    MoreInfo = CustomerMoreInfo
+                                };
+                                outputInfo.IdCustomer = IdCustomer;
+                                outputInfo.Customer = Customer;
+                            }
+                            list.Add(outputInfo);
                         }
 
                     }
@@ -165,9 +182,15 @@ namespace QLKho.Databases.SQL
                     cmd.Parameters.AddWithValue("@IdOutput", (o as OutputInfo).IdOutput);
                     cmd.Parameters.AddWithValue("@Count", (o as OutputInfo).Count);
                     cmd.Parameters.AddWithValue("@OutputPrice", (o as OutputInfo).OutputPrice);
-                    cmd.Parameters.AddWithValue("@States", (o as OutputInfo).States);
-                    cmd.Parameters.AddWithValue("@IdCustomer", (o as OutputInfo).IdCustomer);
-                    (o as Unit).Id = (int)cmd.ExecuteScalar();
+                    cmd.Parameters.AddWithValue("@States", (o as OutputInfo).States ?? "");
+                    if((o as OutputInfo).IdCustomer != null)
+                    {
+                        cmd.Parameters.AddWithValue("@IdCustomer", (o as OutputInfo).IdCustomer);
+                    } else
+                    {
+                        cmd.Parameters.AddWithValue("@IdCustomer", DBNull.Value);
+                    }
+                    (o as OutputInfo).Id = (int)cmd.ExecuteScalar();
                     return o;
                 }
 
@@ -183,7 +206,7 @@ namespace QLKho.Databases.SQL
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand( "update OutputInfo set " +
+                using (SqlCommand cmd = new SqlCommand("update OutputInfo set " +
                                                         "IdInputInfo = @IdInputInfo," +
                                                         "IdOutput = @IdOutput," +
                                                         "Count = @Count," +
@@ -191,6 +214,8 @@ namespace QLKho.Databases.SQL
                                                         "States = @States," +
                                                         "IdCustomer = @IdCustomer where Id = @Id", DataProvider.Instance.DB))
                 {
+                    cmd.Parameters.Add("@Id", SqlDbType.Int);
+                    cmd.Parameters["@Id"].Value = (o as OutputInfo).Id;
                     cmd.Parameters.Add("@IdInputInfo", SqlDbType.Int);
                     cmd.Parameters["@IdInputInfo"].Value = (o as OutputInfo).IdInputInfo;
                     cmd.Parameters.Add("@IdOutput", SqlDbType.Int);
@@ -200,9 +225,16 @@ namespace QLKho.Databases.SQL
                     cmd.Parameters.Add("@OutputPrice", SqlDbType.Float);
                     cmd.Parameters["@OutputPrice"].Value = (o as OutputInfo).OutputPrice;
                     cmd.Parameters.Add("@States", SqlDbType.NVarChar);
-                    cmd.Parameters["@States"].Value = (o as OutputInfo).States;
+                    cmd.Parameters["@States"].Value = (o as OutputInfo).States ?? "";
                     cmd.Parameters.Add("@IdCustomer", SqlDbType.Int);
-                    cmd.Parameters["@IdCustomer"].Value = (o as OutputInfo).IdCustomer;
+                    if ((o as OutputInfo).IdCustomer != null)
+                    {
+                        cmd.Parameters["@IdCustomer"].Value = (o as OutputInfo).IdCustomer;
+                    } else
+                    {
+                        cmd.Parameters["@IdCustomer"].Value = DBNull.Value;
+                    }
+
                     int rowCount = cmd.ExecuteNonQuery();
                     return rowCount;
                 }

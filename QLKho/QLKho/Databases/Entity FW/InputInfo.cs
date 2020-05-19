@@ -9,27 +9,42 @@
 
 namespace QLKho.Databases.Entity_FW
 {
+    using QLKho.ViewModel;
     using System;
     using System.Collections.Generic;
-    
-    public partial class InputInfo
+
+    public partial class InputInfo : BaseViewModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public InputInfo()
         {
             this.OutputInfoes = new HashSet<OutputInfo>();
         }
-    
+
         public int Id { get; set; }
-        public int IdProduct { get; set; }
-        public int IdInput { get; set; }
-        public Nullable<int> Count { get; set; }
-        public Nullable<double> InputPrice { get; set; }
-        public Nullable<double> OutputPrice { get; set; }
-        public string States { get; set; }
-    
-        public virtual Input Input { get; set; }
-        public virtual Product Product { get; set; }
+        private int idProduct;
+        public int IdProduct { get { return idProduct; } set { idProduct = value; OnPropertyChanged(); } }
+
+        private int idInput;
+        public int IdInput { get { return idInput; } set { idInput = value; OnPropertyChanged(); } }
+
+        private Nullable<int> count;
+        public Nullable<int> Count { get { return count; } set { count = value; OnPropertyChanged(); } }
+
+        private Nullable<double> inputPrice;
+        public Nullable<double> InputPrice { get { return inputPrice; } set { inputPrice = value; OnPropertyChanged(); } }
+
+        private Nullable<double> outputPrice;
+        public Nullable<double> OutputPrice { get { return outputPrice; } set { outputPrice = value; OnPropertyChanged(); } }
+
+        private string states;
+        public string States { get { return states; } set { states = value; OnPropertyChanged(); } }
+
+        private Input input;
+        public virtual Input Input { get { return input; } set { input = value; OnPropertyChanged(); } }
+
+        private Product product;
+        public virtual Product Product { get { return product; } set { product = value; OnPropertyChanged(); } }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OutputInfo> OutputInfoes { get; set; }
     }

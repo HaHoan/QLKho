@@ -70,6 +70,9 @@ namespace QLKho.Databases
                 {
                     cmd.Parameters.Add("@Id", SqlDbType.Int);
                     cmd.Parameters["@Id"].Value = (o as Unit).Id;
+                    cmd.Parameters.Add("@DisplayName", SqlDbType.NVarChar);
+                    cmd.Parameters["@DisplayName"].Value = (o as Unit).DisplayName;
+
                     int rowCount = cmd.ExecuteNonQuery();
                     return rowCount;
                 }

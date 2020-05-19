@@ -34,16 +34,16 @@ namespace QLKho.Databases.SQL
                             int Id = reader.GetInt32(reader.GetOrdinal("Id"));
                             string DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"));
                             string BarCode = reader.GetString(reader.GetOrdinal("BarCode"));
-                            int IdUnit = reader.GetInt32(reader.GetOrdinal("IdUnit"));
-                            string UnitName = reader.GetString(reader.GetOrdinal("UnitName"));
-                            int IdSuplier = reader.GetInt32(reader.GetOrdinal("IdSuplier"));
-                            string SuplierName = reader.GetString(reader.GetOrdinal("SuplierName"));
-                            string Address = reader.GetString(reader.GetOrdinal("Address"));
+                            int IdUnit = (int) reader[reader.GetOrdinal("IdUnit")];
+                            string UnitName = reader[reader.GetOrdinal("UnitName")] as string;
+                            int IdSuplier = (int)reader[reader.GetOrdinal("IdSuplier")] ;
+                            string SuplierName = reader[reader.GetOrdinal("SuplierName")] as string;
+                            string Address = reader[reader.GetOrdinal("Address")] as string;
                             string Phone = reader.GetString(reader.GetOrdinal("Phone"));
-                            string Email = reader.GetString(reader.GetOrdinal("Email"));
-                            string MoreInfo = reader.GetString(reader.GetOrdinal("MoreInfo"));
+                            string Email = reader[reader.GetOrdinal("Email")] as string;
+                            string MoreInfo = reader[reader.GetOrdinal("MoreInfo")] as string;
                             DateTime ContractDate = reader.GetDateTime(reader.GetOrdinal("ContractDate"));
-                            string States = reader.GetString(reader.GetOrdinal("States"));
+                            string States = reader[reader.GetOrdinal("States")] as string;
 
                             list.Add(new Product()
                             {
@@ -78,9 +78,9 @@ namespace QLKho.Databases.SQL
                 {
                     cmd.Parameters.AddWithValue("@DisplayName", (o as Product).DisplayName);
                     cmd.Parameters.AddWithValue("@BarCode", (o as Product).BarCode);
-                    cmd.Parameters.AddWithValue("@IdUnit", (o as Product).IdUnit);
-                    cmd.Parameters.AddWithValue("@IdSuplier", (o as Product).IdSuplier);
-                    cmd.Parameters.AddWithValue("@States", (o as Product).States);
+                    cmd.Parameters.AddWithValue("@IdUnit", (o as Product).IdUnit ?? null);
+                    cmd.Parameters.AddWithValue("@IdSuplier", (o as Product).IdSuplier ?? null);
+                    cmd.Parameters.AddWithValue("@States", (o as Product).States ?? "");
 
                     (o as Product).Id = (int)cmd.ExecuteScalar();
                     return o;
@@ -105,16 +105,32 @@ namespace QLKho.Databases.SQL
                                                                         "States = @States " +
                                                                         "where Id = @Id", DataProvider.Instance.DB))
                 {
+                    cmd.Parameters.Add("@Id", SqlDbType.Int);
+                    cmd.Parameters["@Id"].Value = (o as Product).Id;
                     cmd.Parameters.Add("@DisplayName", SqlDbType.NVarChar);
                     cmd.Parameters["@DisplayName"].Value = (o as Product).DisplayName;
                     cmd.Parameters.Add("@BarCode", SqlDbType.NVarChar);
                     cmd.Parameters["@BarCode"].Value = (o as Product).BarCode;
                     cmd.Parameters.Add("@IdUnit", SqlDbType.Int);
-                    cmd.Parameters["@IdUnit"].Value = (o as Product).IdUnit;
+                    if ((o as Product).IdUnit != 0)
+                    {
+                        cmd.Parameters["@IdUnit"].Value = (o as Product).IdUnit;
+                    }
+                    else
+                    {
+                        cmd.Parameters["@IdUnit"].Value = DBNull.Value;
+                    }
                     cmd.Parameters.Add("@IdSuplier", SqlDbType.Int);
-                    cmd.Parameters["@IdSuplier"].Value = (o as Product).IdSuplier;
+                    if ((o as Product).IdSuplier != 0)
+                    {
+                        cmd.Parameters["@IdSuplier"].Value = (o as Product).IdSuplier;
+                    } else
+                    {
+                        cmd.Parameters["@IdSuplier"].Value = DBNull.Value;
+                    }
+
                     cmd.Parameters.Add("@States", SqlDbType.NVarChar);
-                    cmd.Parameters["@States"].Value = (o as Product).States;
+                    cmd.Parameters["@States"].Value = ((o as Product).States ?? "");
 
                     int rowCount = cmd.ExecuteNonQuery();
                     return rowCount;

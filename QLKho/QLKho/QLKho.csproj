@@ -129,6 +129,7 @@
     <Compile Include="Databases\SQL\Products.cs" />
     <Compile Include="Databases\SQL\Supliers.cs" />
     <Compile Include="Databases\SQL\Units.cs" />
+    <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Window\CustomerWindow.xaml.cs">
       <DependentUpon>CustomerWindow.xaml</DependentUpon>
     </Compile>
@@ -245,9 +246,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Assets\logo.png" />
   </ItemGroup>

@@ -28,11 +28,11 @@ namespace QLKho.Databases.SQL
                         while (reader.Read())
                         {
                             int Id = reader.GetInt32(reader.GetOrdinal("Id"));
-                            string DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"));
-                            string Address = reader.GetString(reader.GetOrdinal("Address"));
-                            string Phone = reader.GetString(reader.GetOrdinal("Phone"));
-                            string Email = reader.GetString(reader.GetOrdinal("Email"));
-                            string MoreInfo = reader.GetString(reader.GetOrdinal("MoreInfo"));
+                            string DisplayName = reader[reader.GetOrdinal("DisplayName")] as string;
+                            string Address = reader[reader.GetOrdinal("Address")] as string;
+                            string Phone = reader[reader.GetOrdinal("Phone")] as string;
+                            string Email = reader[reader.GetOrdinal("Email")] as string;
+                            string MoreInfo = reader[reader.GetOrdinal("MoreInfo")] as string;
                             list.Add(new Customer() { Id = Id, DisplayName = DisplayName, Address = Address, Phone = Phone, Email = Email, MoreInfo = MoreInfo});
                         }
 
@@ -57,9 +57,9 @@ namespace QLKho.Databases.SQL
                     cmd.Parameters.AddWithValue("@DisplayName", (o as Customer).DisplayName);
                     cmd.Parameters.AddWithValue("@Address", (o as Customer).Address);
                     cmd.Parameters.AddWithValue("@Phone", (o as Customer).Phone);
-                    cmd.Parameters.AddWithValue("@Email", (o as Customer).Email);
-                    cmd.Parameters.AddWithValue("@MoreInfo", (o as Customer).MoreInfo);
-                    (o as Suplier).Id = (int)cmd.ExecuteScalar();
+                    cmd.Parameters.AddWithValue("@Email", (o as Customer).Email ?? "");
+                    cmd.Parameters.AddWithValue("@MoreInfo", (o as Customer).MoreInfo ?? "");
+                    (o as Customer).Id = (int)cmd.ExecuteScalar();
                     return o;
                 }
 
@@ -83,6 +83,8 @@ namespace QLKho.Databases.SQL
                     "MoreInfo = @MoreInfo" +
                     " where Id = @Id", DataProvider.Instance.DB))
                 {
+                    cmd.Parameters.Add("@Id", SqlDbType.Int);
+                    cmd.Parameters["@Id"].Value = (o as Customer).Id;
                     cmd.Parameters.Add("@DisplayName", SqlDbType.NVarChar);
                     cmd.Parameters["@DisplayName"].Value = (o as Customer).DisplayName;
                     cmd.Parameters.Add("@Address", SqlDbType.NVarChar);

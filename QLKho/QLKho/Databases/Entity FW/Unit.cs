@@ -9,10 +9,11 @@
 
 namespace QLKho.Databases.Entity_FW
 {
+    using QLKho.ViewModel;
     using System;
     using System.Collections.Generic;
     
-    public partial class Unit
+    public partial class Unit : BaseViewModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Unit()
@@ -21,7 +22,17 @@ namespace QLKho.Databases.Entity_FW
         }
     
         public int Id { get; set; }
-        public string DisplayName { get; set; }
+        private string displayName;
+        public string DisplayName {
+            get {
+                return displayName;
+            }
+            set
+            {
+                displayName = value;
+                OnPropertyChanged();
+            }
+        }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products { get; set; }

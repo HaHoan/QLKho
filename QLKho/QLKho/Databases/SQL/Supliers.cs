@@ -12,6 +12,8 @@ namespace QLKho.Databases.SQL
 {
    public class Supliers : DbQuery
     {
+        public object SqlReader { get; private set; }
+
         public override IEnumerable<object> Select()
         {
             var list = new List<Suplier>();
@@ -27,14 +29,15 @@ namespace QLKho.Databases.SQL
 
                         while (reader.Read())
                         {
-                            int Id = reader.GetInt32(reader.GetOrdinal("Id"));
-                            string DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"));
-                            string Address = reader.GetString(reader.GetOrdinal("Address"));
-                            string Phone = reader.GetString(reader.GetOrdinal("Phone"));
-                            string Email = reader.GetString(reader.GetOrdinal("Email"));
-                            string MoreInfo = reader.GetString(reader.GetOrdinal("MoreInfo"));
-                            DateTime ContractDate = reader.GetDateTime(reader.GetOrdinal("ContractDate"));
-                            list.Add(new Suplier() { Id = Id, DisplayName = DisplayName, Address = Address, Phone = Phone, Email = Email, MoreInfo = MoreInfo, ContractDate = ContractDate });
+                            Suplier suplier = new Suplier();
+                            suplier.Id = reader.GetInt32(reader.GetOrdinal("Id"));
+                            suplier.DisplayName = reader[reader.GetOrdinal("DisplayName")] as string;
+                            suplier.Address = reader[reader.GetOrdinal("Address")] as string;
+                            suplier.Phone = reader[reader.GetOrdinal("Phone")] as string;
+                            suplier.Email = reader[reader.GetOrdinal("Email")] as string;
+                            suplier.MoreInfo = reader[reader.GetOrdinal("MoreInfo")] as string;
+                            suplier.ContractDate = reader.GetDateTime(reader.GetOrdinal("ContractDate"));
+                            list.Add(suplier);
                         }
 
                     }
@@ -58,9 +61,9 @@ namespace QLKho.Databases.SQL
                     cmd.Parameters.AddWithValue("@DisplayName", (o as Suplier).DisplayName);
                     cmd.Parameters.AddWithValue("@Address", (o as Suplier).Address);
                     cmd.Parameters.AddWithValue("@Phone", (o as Suplier).Phone);
-                    cmd.Parameters.AddWithValue("@Email", (o as Suplier).Email);
-                    cmd.Parameters.AddWithValue("@MoreInfo", (o as Suplier).MoreInfo);
-                    cmd.Parameters.AddWithValue("@ContractDate", (o as Suplier).DisplayName);
+                    cmd.Parameters.AddWithValue("@Email", (o as Suplier).Email ?? "");
+                    cmd.Parameters.AddWithValue("@MoreInfo", (o as Suplier).MoreInfo ?? "");
+                    cmd.Parameters.AddWithValue("@ContractDate", (o as Suplier).ContractDate);
                     (o as Suplier).Id = (int)cmd.ExecuteScalar();
                     return o;
                 }
@@ -86,6 +89,8 @@ namespace QLKho.Databases.SQL
                     "ContractDate = @ContractDate" +
                     " where Id = @Id", DataProvider.Instance.DB))
                 {
+                    cmd.Parameters.Add("@Id", SqlDbType.Int);
+                    cmd.Parameters["@Id"].Value = (o as Suplier).Id;
                     cmd.Parameters.Add("@DisplayName", SqlDbType.NVarChar);
                     cmd.Parameters["@DisplayName"].Value = (o as Suplier).DisplayName;
                     cmd.Parameters.Add("@Address", SqlDbType.NVarChar);

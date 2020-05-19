@@ -42,9 +42,17 @@ namespace QLKho.ViewModel
         public string DisplayName { get => _DisplayName; set { _DisplayName = value; OnPropertyChanged(); } }
         public ICommand AddUnitCommand { get; set; }
         public ICommand EditUnitCommand { get; set; }
+        public ICommand Loaded { get; set; }
+
         public UnitViewModel()
         {
-            List = new ObservableCollection<Unit>((List<Unit>)DataProvider.Instance.Units.Select());
+            Loaded = new RelayCommand<object>(
+               (p) => { return true; },
+               (p) =>
+               {
+                   List = new ObservableCollection<Unit>((List<Unit>)DataProvider.Instance.Units.Select());
+
+               });
             AddUnitCommand = new RelayCommand<object>(
               (p) =>
             {
@@ -58,7 +66,7 @@ namespace QLKho.ViewModel
             },
             (p) =>
             {
-                var unit = List.Where(x => x.DisplayName.Contains(DisplayName)).FirstOrDefault();
+                var unit = List.Where(x => x.DisplayName == DisplayName).FirstOrDefault();
                 if (unit != null)
                 {
                     MessageBox.Show("Đã có tên đơn vị này rồi. Hãy nhập tên khác!");
@@ -71,7 +79,7 @@ namespace QLKho.ViewModel
             EditUnitCommand = new RelayCommand<object>(
              (p) =>
              {
-                 if (SelectedItem == null && string.IsNullOrEmpty(DisplayName))
+                 if (SelectedItem == null || string.IsNullOrEmpty(DisplayName))
                  {
                      return false;
                  }
@@ -82,7 +90,7 @@ namespace QLKho.ViewModel
              },
            (p) =>
            {
-               var unit = List.Where(x => x.DisplayName.Contains(DisplayName)).FirstOrDefault();
+               var unit = List.Where(x => x.DisplayName == DisplayName).FirstOrDefault();
                if (unit != null)
                {
                    MessageBox.Show("Đã có tên đơn vị này rồi. Hãy nhập tên khác!");

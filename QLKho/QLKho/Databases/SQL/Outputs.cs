@@ -26,8 +26,7 @@ namespace QLKho.Databases.SQL
                     {
                         while (reader.Read())
                         {
-                            int idIndex = reader.GetOrdinal("Id");
-                            int Id = reader.GetInt32(idIndex);
+                            int Id = reader.GetInt32(reader.GetOrdinal("Id"));
                             DateTime DateOutput = reader.GetDateTime(reader.GetOrdinal("DateOutput"));
                             list.Add(new Output() { Id = Id, DateOutput = DateOutput });
                         }
@@ -101,6 +100,35 @@ namespace QLKho.Databases.SQL
                 Console.WriteLine(e.Message.ToString());
                 return 0;
             }
+        }
+
+        public int IsHaveOutputEmpty(DateTime date)
+        {
+            try
+            {
+                string sql = "select * from Outputs where id not in (select IdOutput from OutputInfo) and DateOutput = @DateOutput";
+                SqlCommand command = new SqlCommand(sql, DataProvider.Instance.DB);
+                command.Parameters.AddWithValue("@DateOutput", date);
+                using (DbDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int Id = reader.GetInt32(reader.GetOrdinal("Id"));
+                            return Id;
+                        }
+
+                    }
+                }
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message.ToString());
+                return 0;
+            }
+
         }
     }
 }

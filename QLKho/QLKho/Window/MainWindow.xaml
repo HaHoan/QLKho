@@ -199,7 +199,18 @@
                                 </TextBlock>
 
                             </Grid>
+
                         </materialDesign:Card>
+                        <TextBlock
+                                           Margin="16 0 16 8"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                            FontSize="30"
+                            FontWeight="Bold"
+                            Text="{Binding TimeNow, UpdateSourceTrigger=PropertyChanged}"
+                                           >
+                                                 
+                        </TextBlock>
                     </StackPanel>
 
 

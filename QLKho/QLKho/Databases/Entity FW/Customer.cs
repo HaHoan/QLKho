@@ -9,10 +9,11 @@
 
 namespace QLKho.Databases.Entity_FW
 {
+    using QLKho.ViewModel;
     using System;
     using System.Collections.Generic;
     
-    public partial class Customer
+    public partial class Customer : BaseViewModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Customer()
@@ -21,12 +22,24 @@ namespace QLKho.Databases.Entity_FW
         }
     
         public int Id { get; set; }
-        public string DisplayName { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string MoreInfo { get; set; }
-    
+        private string displayName;
+        public string DisplayName
+        {
+            get { return displayName; }
+            set { displayName = value; OnPropertyChanged(); }
+        }
+        private string address;
+        public string Address { get { return address; } set { address = value; OnPropertyChanged(); } }
+
+        private string phone;
+        public string Phone { get { return phone; } set { phone = value; OnPropertyChanged(); } }
+
+        private string email;
+        public string Email { get { return email; } set { email = value; OnPropertyChanged(); } }
+
+        private string moreInfo;
+        public string MoreInfo { get { return moreInfo; } set { moreInfo = value; OnPropertyChanged(); } }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OutputInfo> OutputInfoes { get; set; }
     }

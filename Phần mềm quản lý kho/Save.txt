@@ -1,0 +1,2 @@
+Cách tính hàng ton kho:
+=  tong xuat - tong nhap

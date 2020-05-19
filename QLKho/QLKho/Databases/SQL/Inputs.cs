@@ -17,7 +17,7 @@ namespace QLKho.Databases.SQL
             var list = new List<Input>();
             try
             {
-                string sql = "select * from InputInfo";
+                string sql = "select * from Input";
                 SqlCommand command = new SqlCommand(sql, DataProvider.Instance.DB);
 
                 using (DbDataReader reader = command.ExecuteReader())
@@ -26,8 +26,7 @@ namespace QLKho.Databases.SQL
                     {
                         while (reader.Read())
                         {
-                            int idIndex = reader.GetOrdinal("Id");
-                            int Id = reader.GetInt32(idIndex);
+                            int Id = reader.GetInt32(reader.GetOrdinal("Id"));
                             DateTime DateInput = reader.GetDateTime(reader.GetOrdinal("DateInput"));
                             list.Add(new Input() { Id = Id, DateInput = DateInput });
                         }
@@ -47,10 +46,10 @@ namespace QLKho.Databases.SQL
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("insert into InputInfo(DateInput) values(@DateInput);SELECT CAST(scope_identity() AS int)", DataProvider.Instance.DB))
+                using (SqlCommand cmd = new SqlCommand("insert into Input(DateInput) values(@DateInput);SELECT CAST(scope_identity() AS int)", DataProvider.Instance.DB))
                 {
                     cmd.Parameters.AddWithValue("@DateInput", (o as Input).DateInput);
-                    (o as Unit).Id = (int)cmd.ExecuteScalar();
+                    (o as Input).Id = (int)cmd.ExecuteScalar();
                     return o;
                 }
 
@@ -101,6 +100,35 @@ namespace QLKho.Databases.SQL
                 Console.WriteLine(e.Message.ToString());
                 return 0;
             }
+        }
+
+        public int IsHaveInputEmpty(DateTime date)
+        {
+            try
+            {
+                string sql = "select * from Input where id not in (select InputInfo.IdInput from InputInfo) and DateInput = @DateInput";
+                SqlCommand command = new SqlCommand(sql, DataProvider.Instance.DB);
+                command.Parameters.AddWithValue("@DateInput", date);
+                using (DbDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int Id = reader.GetInt32(reader.GetOrdinal("Id"));
+                            return Id;
+                        }
+
+                    }
+                }
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message.ToString());
+                return 0;
+            }
+            
         }
     }
 }

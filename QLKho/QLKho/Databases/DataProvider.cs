@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QLKho.Databases.SQL;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -38,7 +39,13 @@ namespace QLKho.Databases
                 Console.WriteLine("Openning Connection ...");
                 DB.Open();
                 Units = new Units();
-
+                Supliers = new Supliers();
+                Customers = new Customers();
+                Products = new Products();
+                InputInfoes = new InputInfoes();
+                Inputs = new Inputs();
+                OutputInfoes = new OutputInfoes();
+                Outputs = new Outputs();
                 Console.WriteLine("Connection successful!");
             }
             catch (Exception e)
@@ -49,6 +56,14 @@ namespace QLKho.Databases
             Console.Read();
         }
         public Units Units { get; set; }
+        public Supliers Supliers { get; set; }
+
+        public Customers Customers { get; set; }
+        public Products Products { get;  set; }
+        public InputInfoes InputInfoes { get; set; }
+        public Inputs Inputs { get; set; }
+        public OutputInfoes OutputInfoes { get; internal set; }
+        public Outputs Outputs { get; internal set; }
 
         ~DataProvider()
         {

@@ -15,6 +15,13 @@
         Icon="/Assets/logo.png"
         Title="Sản phẩm"  Height="800" Width="1500"
         DataContext="{StaticResource ProductViewModel}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction 
+                Command="{Binding Loaded}"
+              />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" ></ColumnDefinition>
@@ -30,59 +37,99 @@
             <Grid Grid.Row="0">
                 <materialDesign:Card Margin="5">
                     <StackPanel>
-                        <TextBox
-                        Margin="5"
-                        Width="auto"
-                        materialDesign:HintAssist.Hint="Mã sản phẩm"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    ></TextBox>
-                        <TextBox
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
                         Margin="5"
                         Width="auto"
                         materialDesign:HintAssist.Hint="Tên sản phẩm"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding DisplayName}"
                     ></TextBox>
-                    <ComboBox
+                            <TextBlock Grid.Column="1"
+                                       Margin="5"
+                                       FontSize="20"
+                                       Width="20"
+                                       Foreground="Red"
+                                       DockPanel.Dock="Right"
+                                       >*</TextBlock>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0"
                         Margin="5"
                         materialDesign:HintAssist.Hint="Đơn vị"
                         IsEditable="True"
-                        materialDesign:HintAssist.HintOpacity=".26">
-                            <ComboBoxItem>
-                                Kg
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                Thùng
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                Tập
-                            </ComboBoxItem>
-                    </ComboBox>
-                    <ComboBox
+                        materialDesign:HintAssist.HintOpacity=".26"
+                        ItemsSource="{Binding ListUnit}"
+                        DisplayMemberPath="DisplayName"
+                        SelectedItem="{Binding SelectedUnit, UpdateSourceTrigger=PropertyChanged}">
+
+                            </ComboBox>
+                            <TextBlock Grid.Column="1"
+                                       Margin="5"
+                                       FontSize="20"
+                                       Width="20"
+                                       Foreground="Red"
+                                       DockPanel.Dock="Right"
+                                       >*</TextBlock>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0"
                         Margin="5"
                         materialDesign:HintAssist.Hint="Nhà cung cấp"
                         IsEditable="True"
-                        materialDesign:HintAssist.HintOpacity=".26">
-                            <ComboBoxItem>
-                                Kg
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                Thùng
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                Tập
-                            </ComboBoxItem>
-                    </ComboBox>
-                        <TextBox
+                        materialDesign:HintAssist.HintOpacity=".26"
+                        ItemsSource="{Binding ListSuplier}"
+                        DisplayMemberPath="DisplayName"
+                        SelectedItem="{Binding SelectedSuplier, UpdateSourceTrigger=PropertyChanged}">
+
+                            </ComboBox>
+                            <TextBlock Grid.Column="1"
+                                       Margin="5"
+                                       FontSize="20"
+                                       Width="20"
+                                       Foreground="Red"
+                                       DockPanel.Dock="Right"
+                                       >*</TextBlock>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
                         Margin="5"
                         Width="auto"
                         materialDesign:HintAssist.Hint="BarCode"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding BarCode, UpdateSourceTrigger=PropertyChanged}"
                     ></TextBox>
+                            <TextBlock Grid.Column="1"
+                                       Margin="5"
+                                       FontSize="20"
+                                       Width="20"
+                                       Foreground="Red"
+                                       DockPanel.Dock="Right"
+                                       >*</TextBlock>
+                        </Grid>
+
                         <TextBox
                         Margin="5"
                         Width="auto"
                         materialDesign:HintAssist.Hint="Trạng thái"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding States, UpdateSourceTrigger=PropertyChanged}"
                     ></TextBox>
 
                     </StackPanel>
@@ -95,6 +142,7 @@
                         Width="100"
                         Content="Thêm"
                         Margin="10"
+                        Command="{Binding AddCommand}"
                       >
                     </Button>
                     <Button
@@ -102,6 +150,7 @@
                         Width="100"
                         Content="Sửa"
                          Margin="10"
+                         Command="{Binding EditCommand}"
                       >
                     </Button>
                     <Button
@@ -109,6 +158,7 @@
                         Width="100"
                         Content="Xóa"
                          Margin="10"
+                         Command="{Binding DeleteCommand}"
                       >
                     </Button>
                 </StackPanel>
@@ -121,16 +171,14 @@
         <!--List input-->
         <Grid Grid.Column="2">
             <materialDesign:Card>
-                <ListView>
+                <ListView ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="STT"></GridViewColumn>
-                            <GridViewColumn Header="Mã sản phẩm"></GridViewColumn>
-                            <GridViewColumn Header="Tên sản phẩm"></GridViewColumn>
-                            <GridViewColumn Header="Đơn vị"></GridViewColumn>
-                            <GridViewColumn Header="Nhà cung cấp"></GridViewColumn>
-                            <GridViewColumn Header="BarCode"></GridViewColumn>
-                            <GridViewColumn Header="Trạng thái"></GridViewColumn>
+                            <GridViewColumn Header="Tên sản phẩm" DisplayMemberBinding="{Binding DisplayName}" Width="200"></GridViewColumn>
+                            <GridViewColumn Header="Đơn vị" DisplayMemberBinding="{Binding Unit.DisplayName}" Width="70"></GridViewColumn>
+                            <GridViewColumn Header="Nhà cung cấp" DisplayMemberBinding="{Binding Suplier.DisplayName}" Width="200"></GridViewColumn>
+                            <GridViewColumn Header="BarCode" DisplayMemberBinding="{Binding BarCode}" Width="200"></GridViewColumn>
+                            <GridViewColumn Header="Trạng thái" DisplayMemberBinding="{Binding States}" Width="auto"></GridViewColumn>
 
                         </GridView>
                     </ListView.View>

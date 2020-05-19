@@ -15,6 +15,13 @@
         Icon="/Assets/logo.png"
         Title="Đơn vị tính"  Height="800" Width="1500"
         DataContext="{StaticResource UnitViewModel}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction 
+                Command="{Binding Loaded}"
+              />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -34,7 +41,7 @@
                         Width="auto"
                         materialDesign:HintAssist.Hint="Tên đơn vị"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                        Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"
                     ></TextBox>
                     </StackPanel>
                 </materialDesign:Card>
@@ -74,7 +81,7 @@
         <Grid Grid.Row="1">
             <materialDesign:Card  Margin="5">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ListView ItemsSource="{Binding List, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedItem,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    <ListView ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedItem,UpdateSourceTrigger=PropertyChanged}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}"></GridViewColumn>

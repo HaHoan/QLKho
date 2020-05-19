@@ -16,6 +16,13 @@
         Title="Xuất hàng"  Height="800" Width="1500"
         DataContext="{StaticResource OutputViewModel}"
         >
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction 
+                Command="{Binding Loaded}"
+              />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" ></ColumnDefinition>
@@ -31,41 +38,113 @@
             <Grid Grid.Row="0">
                 <materialDesign:Card Margin="5">
                     <StackPanel>
-                        <TextBox
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox
                         Margin="5"
                         Width="auto"
-                        materialDesign:HintAssist.Hint="Mã sản phẩm"
+                        materialDesign:HintAssist.Hint="BarCode"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding BarCode, UpdateSourceTrigger=PropertyChanged}"
                     ></TextBox>
-                        
-                        <DatePicker
+                            <TextBlock Grid.Column="1"
+                                       Margin="5"
+                                       FontSize="20"
+                                       Width="20"
+                                       Foreground="Red"
+                                       DockPanel.Dock="Right"
+                                       >*</TextBlock>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <DatePicker
                         Margin="5"
                         Width="auto"
                         materialDesign:HintAssist.Hint="Ngày xuất"
-                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-                        <TextBox
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                        SelectedDate="{Binding DateOutput, UpdateSourceTrigger=PropertyChanged}"
+                            />
+                            <TextBlock Grid.Column="1"
+                                       Margin="5"
+                                       FontSize="20"
+                                       Width="20"
+                                       Foreground="Red"
+                                       DockPanel.Dock="Right"
+                                       >*</TextBlock>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox
                         Margin="5"
                         Width="auto"
                         materialDesign:HintAssist.Hint="Số lượng"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}"
                     ></TextBox>
+                            <TextBlock Grid.Column="1"
+                                       Margin="5"
+                                       FontSize="20"
+                                       Width="20"
+                                       Foreground="Red"
+                                       DockPanel.Dock="Right"
+                                       >*</TextBlock>
+                        </Grid>
+
                         <TextBox
+                        Margin="5"
+                        Width="auto"
+                        materialDesign:HintAssist.Hint="Giá nhập"
+                            IsEnabled="False"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding InputPrice, UpdateSourceTrigger=PropertyChanged}"
+                    ></TextBox>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox
                         Margin="5"
                         Width="auto"
                         materialDesign:HintAssist.Hint="Giá xuất"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding OutputPrice, UpdateSourceTrigger=PropertyChanged}"
                     ></TextBox>
-                        <TextBox
+                            <TextBlock Grid.Column="1"
+                                       Margin="5"
+                                       FontSize="20"
+                                       Width="20"
+                                       Foreground="Red"
+                                       DockPanel.Dock="Right"
+                                       >*</TextBlock>
+                        </Grid>
+
+                        <ComboBox Grid.Column="0"
                         Margin="5"
-                        Width="auto"
                         materialDesign:HintAssist.Hint="Khách hàng"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    ></TextBox>
+                        IsEditable="True"
+                        materialDesign:HintAssist.HintOpacity=".26"
+                        ItemsSource="{Binding ListCustomer}"
+                        DisplayMemberPath="DisplayName"
+                        SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding CustomerName, UpdateSourceTrigger=PropertyChanged}">
+                        </ComboBox>
                         <TextBox
                         Margin="5"
                         Width="auto"
                         materialDesign:HintAssist.Hint="Trạng thái"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Text="{Binding States, UpdateSourceTrigger=PropertyChanged}"
                     ></TextBox>
                     </StackPanel>
                 </materialDesign:Card>
@@ -77,6 +156,7 @@
                         Width="100"
                         Content="Thêm"
                         Margin="10"
+                        Command="{Binding AddCommand}"
                       >
                     </Button>
                     <Button
@@ -84,6 +164,7 @@
                         Width="100"
                         Content="Sửa"
                          Margin="10"
+                        Command="{Binding EditCommand}"
                       >
                     </Button>
                     <Button
@@ -91,6 +172,7 @@
                         Width="100"
                         Content="Xóa"
                          Margin="10"
+                        Command="{Binding DeleteCommand}"
                       >
                     </Button>
                 </StackPanel>
@@ -99,20 +181,19 @@
         </Grid>
 
         <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"></GridSplitter>
-        
+
         <!--List input-->
         <Grid Grid.Column="2">
             <materialDesign:Card Margin="5">
-                <ListView>
+                <ListView ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="STT"></GridViewColumn>
-                            <GridViewColumn Header="Mã sản phẩm"></GridViewColumn>
-                            <GridViewColumn Header="Ngày xuất"></GridViewColumn>
-                            <GridViewColumn Header="Số lượng"></GridViewColumn>
-                            <GridViewColumn Header="Giá xuất"></GridViewColumn>
-                            <GridViewColumn Header="Khách hàng"></GridViewColumn>
-                            <GridViewColumn Header="Trạng thái"></GridViewColumn>
+                            <GridViewColumn Header="BarCode" DisplayMemberBinding="{Binding InputInfo.Product.BarCode}"></GridViewColumn>
+                            <GridViewColumn Header="Ngày xuất" DisplayMemberBinding="{Binding Output.DateOutput, StringFormat=dd/MM/yyyy}"></GridViewColumn>
+                            <GridViewColumn Header="Số lượng" DisplayMemberBinding="{Binding Count}"></GridViewColumn>
+                            <GridViewColumn Header="Giá xuất" DisplayMemberBinding="{Binding OutputPrice}"></GridViewColumn>
+                            <GridViewColumn Header="Khách hàng" DisplayMemberBinding="{Binding Customer.DisplayName}"></GridViewColumn>
+                            <GridViewColumn Header="Trạng thái" DisplayMemberBinding="{Binding States}"></GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>

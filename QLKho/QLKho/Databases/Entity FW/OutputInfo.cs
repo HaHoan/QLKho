@@ -9,21 +9,38 @@
 
 namespace QLKho.Databases.Entity_FW
 {
+    using QLKho.ViewModel;
     using System;
     using System.Collections.Generic;
     
-    public partial class OutputInfo
+    public partial class OutputInfo : BaseViewModel
     {
         public int Id { get; set; }
-        public int IdInputInfo { get; set; }
-        public int IdOutput { get; set; }
-        public Nullable<double> OutputPrice { get; set; }
-        public Nullable<int> Count { get; set; }
-        public Nullable<int> IdCustomer { get; set; }
-        public string States { get; set; }
-    
-        public virtual Customer Customer { get; set; }
-        public virtual InputInfo InputInfo { get; set; }
-        public virtual Output Output { get; set; }
+
+        private int idInputInfo;
+        public int IdInputInfo { get { return idInputInfo; } set { idInputInfo = value; OnPropertyChanged(); } }
+
+        private int idOutput;
+        public int IdOutput { get { return idOutput; } set { idOutput = value; OnPropertyChanged(); } }
+
+        private Nullable<double> outputPrice;
+        public Nullable<double> OutputPrice { get { return outputPrice; } set { outputPrice = value; OnPropertyChanged(); } }
+
+
+        private Nullable<int> count;
+        public Nullable<int> Count { get { return count; } set { count = value; OnPropertyChanged(); } }
+        private Nullable<int> idCustomer;
+        public Nullable<int> IdCustomer { get { return idCustomer; } set { idCustomer = value; OnPropertyChanged(); } }
+        private string states;
+        public string States { get { return states; } set { states = value; OnPropertyChanged(); } }
+
+        private Customer customer;
+        public Customer Customer { get { return customer; } set { customer = value; OnPropertyChanged(); } }
+
+        private InputInfo inputInfo;
+        public InputInfo InputInfo { get { return inputInfo; } set { inputInfo = value; OnPropertyChanged(); } }
+
+        private Output output;
+        public Output Output { get { return output; } set { output = value; OnPropertyChanged(); } }
     }
 }

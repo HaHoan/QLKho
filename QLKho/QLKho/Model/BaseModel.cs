@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QLKho.Model
 {
-    class BaseModel
+    public class BaseModel
     {
     }
 }
