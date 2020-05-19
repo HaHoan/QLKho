@@ -20,12 +20,21 @@ namespace QLKho.ViewModel
         public ICommand OpenUnitCommand { get; set; }
         public ICommand OpenSuplierCommand { get; set; }
         public ICommand OpenCustomerCommand { get; set; }
+        public ICommand FilterCommand { get; set; }
 
-        private string timeNow;
         private DateTime dateNow;
         private DispatcherTimer dispatcherTimer;
+        private DateTime dateFrom;
+        public DateTime DateFrom { get { return dateFrom; } set { dateFrom = value; OnPropertyChanged(); } }
 
+        private DateTime dateTo;
+        public DateTime DateTo { get { return dateTo; } set { dateTo = value; OnPropertyChanged(); } }
+
+        private string timeNow;
         public string TimeNow { get { return timeNow; } set { timeNow = value; OnPropertyChanged(); } }
+
+        private int totalInput;
+        public int TotalInput { get { return totalInput; } set { totalInput = value; OnPropertyChanged(); } }
         public MainViewModel()
         {
             Loaded = new RelayCommand<object>(
@@ -39,8 +48,18 @@ namespace QLKho.ViewModel
                     dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
                     dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
                     dispatcherTimer.Start();
-
+                    DateTo = DateTime.Now;
+                    DateFrom = new DateTime(DateTo.Year, DateTo.Month, 1);
                 });
+            FilterCommand = new RelayCommand<object>(
+                (p) =>
+                {
+                    return DateFrom != null && DateTo != null;
+                },
+                (p) =>
+             {
+                 DataProvider.Instance.InputInfoes.TotalInput(DateFrom.Date, DateTo.Date);
+             });
             OpenInputCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
              {
                  InputWindow inputWindow = new InputWindow();
@@ -88,7 +107,7 @@ namespace QLKho.ViewModel
                 // Tạo phiếu nhập cho ngày mới
                 CreateNewInput(dateNow);
 
-                if(IsHaveOutputEmpty(dateBefore) is int IdOutput)
+                if (IsHaveOutputEmpty(dateBefore) is int IdOutput)
                 {
                     DeleteOutputEmpty(IdOutput);
                 }

@@ -168,5 +168,37 @@ namespace QLKho.Databases.SQL
                 return 0;
             }
         }
+
+        public int TotalInput(DateTime from, DateTime to)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("Sum_Input", DataProvider.Instance.DB))
+                {
+                    cmd.Parameters.Add("@from", SqlDbType.DateTime);
+                    cmd.Parameters["@from"].Value = from;
+                    cmd.Parameters.Add("@to", SqlDbType.DateTime);
+                    cmd.Parameters["@to"].Value = to;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (DbDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                               return reader.GetInt32(reader.GetOrdinal("Total"));
+                            }
+
+                        }
+                    }
+                }
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message.ToString());
+                return 0;
+            }
+        }
     }
 }

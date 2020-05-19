@@ -93,17 +93,20 @@
                                     Width="100"
                                     materialDesign:HintAssist.Hint="Từ ngày"
                                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                                    Margin="10"/>
+                                    Margin="10"
+                            SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged, StringFormat=dd/MM/yyyy}"/>
                         <DatePicker
                                     Width="100"
                                     materialDesign:HintAssist.Hint="Đến ngày"
                                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
-                                    Margin="10"/>
+                                    Margin="10"
+                             SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged, StringFormat=dd/MM/yyyy}"/>
                         <Button
                                     Width="100"
                                     Content="Lọc"
                                     Margin="10"
                                     Background="#01579b"
+                            Command="{Binding FilterCommand}"
                                     >
                         </Button>
                         <materialDesign:Card
@@ -131,8 +134,9 @@
                                            Margin="16 0 16 8"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Left"
+                                    Text="{Binding TotalInput, UpdateSourceTrigger=PropertyChanged}"
                                            >
-                                                 1000
+                                                 0
                                 </TextBlock>
 
                             </Grid>
@@ -164,7 +168,7 @@
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Left"
                                            >
-                                                 1000
+                                                 0
                                 </TextBlock>
 
                             </Grid>
