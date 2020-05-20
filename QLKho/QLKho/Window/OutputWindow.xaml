@@ -103,7 +103,7 @@
                         <TextBox
                         Margin="5"
                         Width="auto"
-                        materialDesign:HintAssist.Hint="Giá nhập"
+                        materialDesign:HintAssist.Hint="Giá nhập gần nhất"
                             IsEnabled="False"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Text="{Binding InputPrice, UpdateSourceTrigger=PropertyChanged}"

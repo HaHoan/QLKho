@@ -131,8 +131,7 @@ namespace QLKho.ViewModel
               Input input = ListInput.Where(x => x.DateInput == DateInput).FirstOrDefault();
               if (input == null)
               {
-                  MessageBox.Show(string.Format("Chưa có phiếu hóa đơn của ngày {0},  \n Hãy tạo phiếu hóa đơn trước!", DateInput.ToString()));
-                  return;
+                  input = (Input)DataProvider.Instance.Inputs.Insert(new Input() { DateInput = DateInput });
               }
               //if(product != null && input != null)
               //{

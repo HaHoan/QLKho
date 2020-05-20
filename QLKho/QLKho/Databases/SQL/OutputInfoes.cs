@@ -177,13 +177,14 @@ namespace QLKho.Databases.SQL
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("insert into OutputInfo(IdInputInfo,IdOutput,Count,OutputPrice,States,IdCustomer) values(@IdInputInfo,@IdOutput,@Count,@OutputPrice,@States,@IdCustomer);SELECT CAST(scope_identity() AS int)", DataProvider.Instance.DB))
+                using (SqlCommand cmd = new SqlCommand("insert into OutputInfo(IdInputInfo,IdOutput,Count,OutputPrice,States,IdCustomer,IdProduct) values(@IdInputInfo,@IdOutput,@Count,@OutputPrice,@States,@IdCustomer, @IdProduct);SELECT CAST(scope_identity() AS int)", DataProvider.Instance.DB))
                 {
                     cmd.Parameters.AddWithValue("@IdInputInfo", (o as OutputInfo).IdInputInfo);
                     cmd.Parameters.AddWithValue("@IdOutput", (o as OutputInfo).IdOutput);
                     cmd.Parameters.AddWithValue("@Count", (o as OutputInfo).Count);
                     cmd.Parameters.AddWithValue("@OutputPrice", (o as OutputInfo).OutputPrice);
                     cmd.Parameters.AddWithValue("@States", (o as OutputInfo).States ?? "");
+                    cmd.Parameters.AddWithValue("@IdProduct", (o as OutputInfo).IdProduct);
                     if((o as OutputInfo).IdCustomer != null)
                     {
                         cmd.Parameters.AddWithValue("@IdCustomer", (o as OutputInfo).IdCustomer);
@@ -322,7 +323,11 @@ namespace QLKho.Databases.SQL
                                 string BarCode = reader[reader.GetOrdinal("BarCode")] as string;
                                 string DisplayName = reader[reader.GetOrdinal("DisplayName")] as string;
                                 int TotalInput = (int)reader[reader.GetOrdinal("TotalInput")];
-                                int TotalOutput = (int)reader[reader.GetOrdinal("TotalOutput")];
+                                int TotalOutput = 0;
+                                if (!reader.IsDBNull(reader.GetOrdinal("TotalOutput")))
+                                {
+                                    TotalOutput = (int)reader[reader.GetOrdinal("TotalOutput")];
+                                }
                                 list.Add(new InventoryModel() { BarCode = BarCode, DisplayName = DisplayName, TotalInput = TotalInput, TotalOutput = TotalOutput });
                             }
 

@@ -15,6 +15,8 @@ namespace QLKho.Databases.Entity_FW
     
     public partial class OutputInfo : BaseViewModel
     {
+        public int idProduct;
+        public int IdProduct { get { return idProduct; } set { idProduct = value; OnPropertyChanged(); } }
         public int Id { get; set; }
 
         private int idInputInfo;
@@ -42,5 +44,6 @@ namespace QLKho.Databases.Entity_FW
 
         private Output output;
         public Output Output { get { return output; } set { output = value; OnPropertyChanged(); } }
+        public virtual Product Product { get; set; }
     }
 }

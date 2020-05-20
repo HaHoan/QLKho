@@ -47,7 +47,7 @@
                             <TextBox Grid.Column="0"
                                 Margin="5"
                                 Width="auto"
-                                materialDesign:HintAssist.Hint="Tên nhà cung cấp"
+                                materialDesign:HintAssist.Hint="Tên khách hàng"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"
                     ></TextBox>

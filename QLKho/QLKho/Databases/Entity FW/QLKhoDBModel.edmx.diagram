@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d45367269bd54765b2218306c75fc2d8" Name="Diagram1">
+      <Diagram DiagramId="853ce360cf1c4092a12520304d3589f2" Name="Diagram1">
         <EntityTypeShape EntityType="QLKHOModel.Customer" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="QLKHOModel.Input" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="QLKHOModel.InputInfo" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />

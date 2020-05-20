@@ -89,9 +89,16 @@ namespace QLKho.ViewModel
                 },
                 (p) =>
              {
-                 TotalInput = DataProvider.Instance.InputInfoes.TotalInput(DateFrom.Date, DateTo.Date);
-                 TotalOutput = DataProvider.Instance.OutputInfoes.TotalOutput(DateFrom.Date, DateTo.Date);
-                 List = new ObservableCollection<InventoryModel>((List<InventoryModel>)DataProvider.Instance.OutputInfoes.GetInventory(DateFrom.Date, DateTo.Date));
+                 try
+                 {
+                     TotalInput = DataProvider.Instance.InputInfoes.TotalInput(DateFrom.Date, DateTo.Date);
+                     TotalOutput = DataProvider.Instance.OutputInfoes.TotalOutput(DateFrom.Date, DateTo.Date);
+                     List = new ObservableCollection<InventoryModel>((List<InventoryModel>)DataProvider.Instance.OutputInfoes.GetInventory(DateFrom.Date, DateTo.Date));
+                 } catch(Exception e)
+                 {
+                     Console.Write(e.Message.ToString());
+                 }
+                 
 
              });
             OpenInputCommand = new RelayCommand<object>((p) => { return true; }, (p) =>

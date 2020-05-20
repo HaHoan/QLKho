@@ -165,7 +165,6 @@ namespace QLKho.ViewModel
                    ListUnit = new ObservableCollection<Unit>((List<Unit>)DataProvider.Instance.Units.Select());
                    ListSuplier = new ObservableCollection<Suplier>((List<Suplier>)DataProvider.Instance.Supliers.Select());
                    List = new ObservableCollection<Product>((List<Product>)DataProvider.Instance.Products.Select());
-
                });
            
             AddCommand = new RelayCommand<object>(
@@ -183,13 +182,16 @@ namespace QLKho.ViewModel
           (p) =>
           {
               var product = List.Where(x => x.BarCode == BarCode).FirstOrDefault();
+              var unit = ListUnit.Where(x => x.Id == IdUnit).FirstOrDefault();
+              var suplier = ListSuplier.Where(x => x.Id == IdSuplier).FirstOrDefault();
               if (product != null)
               {
                   MessageBox.Show("Đã có sản phẩm này rồi!");
+                  return;
               }
               else
               {
-                  List.Add((Product)DataProvider.Instance.Products.Insert(new Product() { DisplayName = DisplayName, BarCode = BarCode, States = States, IdUnit = IdUnit, IdSuplier = IdSuplier }));
+                  List.Add((Product)DataProvider.Instance.Products.Insert(new Product() { DisplayName = DisplayName, BarCode = BarCode, States = States, IdUnit = IdUnit, IdSuplier = IdSuplier, Unit = unit, Suplier = suplier}));
               }
           }
           );

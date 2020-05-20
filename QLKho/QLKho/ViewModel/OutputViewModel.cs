@@ -113,16 +113,17 @@ namespace QLKho.ViewModel
                 barCode = value;
                 OnPropertyChanged();
                 InputInfo inputInfo = ListInputInfo.Where(x => x.Product.BarCode == BarCode).LastOrDefault();
-                if(inputInfo != null)
+                if (inputInfo != null)
                 {
                     InputPrice = (double)inputInfo.InputPrice;
                     OutputPrice = (double)inputInfo.OutputPrice;
-                } else
+                }
+                else
                 {
                     InputPrice = 0;
                     OutputPrice = 0;
                 }
-                
+
             }
         }
 
@@ -145,7 +146,7 @@ namespace QLKho.ViewModel
         private string customerName;
         public string CustomerName { get => customerName; set { customerName = value; OnPropertyChanged(); } }
 
-        public ICommand Loaded { get;  set; }
+        public ICommand Loaded { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
 
@@ -162,7 +163,7 @@ namespace QLKho.ViewModel
                    ListCustomer = new ObservableCollection<Customer>((List<Customer>)DataProvider.Instance.Customers.Select());
 
                });
-          
+
             AddCommand = new RelayCommand<object>(
           (p) =>
           {
@@ -186,31 +187,27 @@ namespace QLKho.ViewModel
             Output output = ListOutput.Where(x => x.DateOutput == DateOutput).FirstOrDefault();
             if (output == null)
             {
-                MessageBox.Show(string.Format("Chưa có phiếu hóa đơn của ngày {0}, Hãy tạo phiếu hóa đơn trước!", DateOutput.ToString()));
-                return;
+                output = (Output)DataProvider.Instance.Outputs.Insert(new Output() { DateOutput = DateOutput });
             }
 
-            Customer customer = ListCustomer.Where(x => x.DisplayName == CustomerName).FirstOrDefault();
-            if (customer == null)
+            OutputInfo outputInfo = new OutputInfo()
             {
-                MessageBox.Show("Chưa có khách hàng này!");
-                return;
-            }
-
-            List.Add((OutputInfo)DataProvider.Instance.OutputInfoes.Insert(
-                new OutputInfo()
-                {
-                    IdInputInfo = inputInfo.Id,
-                    IdOutput = output.Id,
-                    States = States,
-                    Count = Count,
-                    OutputPrice = OutputPrice,
-                    InputInfo = inputInfo,
-                    Output = output,
-                    Customer = SelectedCustomer,
-                    IdCustomer = SelectedCustomer.Id
-                })
-                );
+                IdProduct = inputInfo.IdProduct,
+                IdInputInfo = inputInfo.Id,
+                IdOutput = output.Id,
+                States = States,
+                Count = Count,
+                OutputPrice = OutputPrice,
+                InputInfo = inputInfo,
+                Output = output
+            };
+            if (SelectedCustomer != null)
+            {
+                outputInfo.Customer = SelectedCustomer;
+                 outputInfo.IdCustomer = SelectedCustomer.Id;
+             }
+            List.Add((OutputInfo)DataProvider.Instance.OutputInfoes.Insert(outputInfo)
+            );
         }
         );
             EditCommand = new RelayCommand<object>(
@@ -244,16 +241,20 @@ namespace QLKho.ViewModel
              OutputInfo outputInfo = new OutputInfo()
              {
                  Id = SelectedItem.Id,
+                 IdProduct = inputInfo.IdProduct,
                  IdInputInfo = inputInfo.Id,
                  IdOutput = output.Id,
                  States = States,
                  Count = Count,
                  OutputPrice = OutputPrice,
                  InputInfo = inputInfo,
-                 Output = output,
-                 Customer = SelectedCustomer,
-                 IdCustomer = SelectedCustomer.Id
+                 Output = output
              };
+             if(SelectedCustomer != null)
+             {
+                 outputInfo.Customer = SelectedCustomer;
+                 outputInfo.IdCustomer = SelectedCustomer.Id;
+             }
              if (DataProvider.Instance.OutputInfoes.Update(outputInfo) > 0)
              {
                  SelectedItem.IdOutput = outputInfo.IdOutput;
