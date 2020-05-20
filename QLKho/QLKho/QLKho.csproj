@@ -130,6 +130,7 @@
     <Compile Include="Databases\SQL\Supliers.cs" />
     <Compile Include="Databases\SQL\Units.cs" />
     <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\InventoryModel.cs" />
     <Compile Include="Window\CustomerWindow.xaml.cs">
       <DependentUpon>CustomerWindow.xaml</DependentUpon>
     </Compile>

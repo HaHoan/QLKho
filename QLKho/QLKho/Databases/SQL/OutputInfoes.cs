@@ -1,4 +1,5 @@
 ﻿using QLKho.Databases.Entity_FW;
+using QLKho.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -266,6 +267,75 @@ namespace QLKho.Databases.SQL
                 Console.WriteLine(e.Message.ToString());
                 return 0;
             }
+        }
+
+        public int TotalOutput(DateTime from, DateTime to)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("Sum_Output", DataProvider.Instance.DB))
+                {
+                    cmd.Parameters.Add("@from", SqlDbType.DateTime);
+                    cmd.Parameters["@from"].Value = from;
+                    cmd.Parameters.Add("@to", SqlDbType.DateTime);
+                    cmd.Parameters["@to"].Value = to;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (DbDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                return reader.GetInt32(reader.GetOrdinal("Total"));
+                            }
+
+                        }
+                    }
+                }
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message.ToString());
+                return 0;
+            }
+        }
+
+        public IEnumerable<object> GetInventory(DateTime from, DateTime to)
+        {
+            List<InventoryModel> list = new List<InventoryModel>();
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("Sum_Inventory", DataProvider.Instance.DB))
+                {
+                    cmd.Parameters.Add("@from", SqlDbType.DateTime);
+                    cmd.Parameters["@from"].Value = from;
+                    cmd.Parameters.Add("@to", SqlDbType.DateTime);
+                    cmd.Parameters["@to"].Value = to;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (DbDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                string BarCode = reader[reader.GetOrdinal("BarCode")] as string;
+                                string DisplayName = reader[reader.GetOrdinal("DisplayName")] as string;
+                                int TotalInput = (int)reader[reader.GetOrdinal("TotalInput")];
+                                int TotalOutput = (int)reader[reader.GetOrdinal("TotalOutput")];
+                                list.Add(new InventoryModel() { BarCode = BarCode, DisplayName = DisplayName, TotalInput = TotalInput, TotalOutput = TotalOutput });
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message.ToString());
+                return null;
+            }
+            return list;
         }
     }
 }

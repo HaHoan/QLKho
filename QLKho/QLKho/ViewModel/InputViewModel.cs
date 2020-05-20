@@ -134,11 +134,11 @@ namespace QLKho.ViewModel
                   MessageBox.Show(string.Format("Chưa có phiếu hóa đơn của ngày {0},  \n Hãy tạo phiếu hóa đơn trước!", DateInput.ToString()));
                   return;
               }
-              if(product != null && input != null)
-              {
-                  MessageBox.Show("Sản phẩm này đã được nhập rồi! \n Bấm sửa để thêm số lượng hoặc sửa giá cả.");
-                  return;
-              }
+              //if(product != null && input != null)
+              //{
+              //    MessageBox.Show("Sản phẩm này đã được nhập rồi! \n Bấm sửa để thêm số lượng hoặc sửa giá cả.");
+              //    return;
+              //}
               List.Add((InputInfo)DataProvider.Instance.InputInfoes.Insert(
                   new InputInfo()
                   {

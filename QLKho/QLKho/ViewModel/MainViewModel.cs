@@ -1,7 +1,9 @@
 ﻿using QLKho.Databases;
 using QLKho.Databases.Entity_FW;
+using QLKho.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +37,33 @@ namespace QLKho.ViewModel
 
         private int totalInput;
         public int TotalInput { get { return totalInput; } set { totalInput = value; OnPropertyChanged(); } }
+
+        private int totalOutput;
+        public int TotalOutput {
+            get {
+                return totalOutput;
+            }
+            set {
+                totalOutput = value;
+                OnPropertyChanged();
+                TotalInventory = totalInput - TotalOutput;
+            }
+        }
+
+        private int totalInventory;
+        public int TotalInventory { get { return totalInventory; } set { totalInventory = value; OnPropertyChanged(); } }
+        private ObservableCollection<InventoryModel> list;
+        public ObservableCollection<InventoryModel> List
+        {
+            get => list;
+            set
+            {
+                list = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public MainViewModel()
         {
             Loaded = new RelayCommand<object>(
@@ -50,6 +79,8 @@ namespace QLKho.ViewModel
                     dispatcherTimer.Start();
                     DateTo = DateTime.Now;
                     DateFrom = new DateTime(DateTo.Year, DateTo.Month, 1);
+                    TotalInput = DataProvider.Instance.InputInfoes.TotalInput(DateFrom.Date, DateTo.Date);
+                    TotalOutput = DataProvider.Instance.OutputInfoes.TotalOutput(DateFrom.Date, DateTo.Date);
                 });
             FilterCommand = new RelayCommand<object>(
                 (p) =>
@@ -58,7 +89,10 @@ namespace QLKho.ViewModel
                 },
                 (p) =>
              {
-                 DataProvider.Instance.InputInfoes.TotalInput(DateFrom.Date, DateTo.Date);
+                 TotalInput = DataProvider.Instance.InputInfoes.TotalInput(DateFrom.Date, DateTo.Date);
+                 TotalOutput = DataProvider.Instance.OutputInfoes.TotalOutput(DateFrom.Date, DateTo.Date);
+                 List = new ObservableCollection<InventoryModel>((List<InventoryModel>)DataProvider.Instance.OutputInfoes.GetInventory(DateFrom.Date, DateTo.Date));
+
              });
             OpenInputCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
              {

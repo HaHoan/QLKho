@@ -136,7 +136,7 @@
                                            HorizontalAlignment="Left"
                                     Text="{Binding TotalInput, UpdateSourceTrigger=PropertyChanged}"
                                            >
-                                                 0
+                                                 
                                 </TextBlock>
 
                             </Grid>
@@ -156,7 +156,7 @@
                                 <TextBlock Grid.Row="0"
                                            Margin="16 16 16 4"
                                            >
-                                              Tổng nhập
+                                              Tổng xuất
                                 </TextBlock>
                                 <Separator
                                             Grid.Row="1"
@@ -167,8 +167,9 @@
                                            Margin="16 0 16 8"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Left"
+                                    Text="{Binding TotalOutput, UpdateSourceTrigger=PropertyChanged}"
                                            >
-                                                 0
+                                                 
                                 </TextBlock>
 
                             </Grid>
@@ -198,8 +199,9 @@
                                            Margin="16 0 16 8"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Left"
+                                    Text="{Binding TotalInventory, UpdateSourceTrigger=PropertyChanged}"
                                            >
-                                                 1000
+                                                 
                                 </TextBlock>
 
                             </Grid>
@@ -225,12 +227,14 @@
             <!--List Inventory-->
             <Grid Grid.Row="3">
                 <materialDesign:Card Margin="5" VerticalAlignment="Stretch">
-                    <ListView VerticalAlignment="Stretch">
+                    <ListView VerticalAlignment="Stretch" ItemsSource="{Binding List}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="STT"></GridViewColumn>
-                                <GridViewColumn Header="Tên sản phẩm"></GridViewColumn>
-                                <GridViewColumn Header="Số lượng tồn"></GridViewColumn>
+                                <GridViewColumn Header="BarCode" DisplayMemberBinding="{Binding BarCode}"></GridViewColumn>
+                                <GridViewColumn Header="Tên sản phẩm" DisplayMemberBinding="{Binding DisplayName}"></GridViewColumn>
+                                <GridViewColumn Header="Tổng nhập" DisplayMemberBinding="{Binding TotalInput}"></GridViewColumn>
+                                <GridViewColumn Header="Tổng xuất" DisplayMemberBinding="{Binding TotalOutput}"></GridViewColumn>
+                                <GridViewColumn Header="Số lượng tồn" DisplayMemberBinding="{Binding Inventory}"></GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
