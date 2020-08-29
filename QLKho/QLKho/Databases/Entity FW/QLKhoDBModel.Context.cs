@@ -16,7 +16,7 @@ namespace QLKho.Databases.Entity_FW
     public partial class QLKHOEntities : DbContext
     {
         public QLKHOEntities()
-            : base("name=QLKHOEntities")
+            : base(Helper.Decrypt(System.Configuration.ConfigurationManager.ConnectionStrings["QLKHOEntities"].ConnectionString, "umcvn"))
         {
         }
     

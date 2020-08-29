@@ -54,6 +54,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -118,6 +119,7 @@
     <Compile Include="Databases\Entity FW\Unit.cs">
       <DependentUpon>QLKhoDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Databases\Helper.cs" />
     <Compile Include="Databases\SQL\Customers.cs" />
     <Compile Include="Databases\SQL\DbQuery.cs" />
     <Compile Include="Databases\SQL\DBSQLServerUtils.cs" />

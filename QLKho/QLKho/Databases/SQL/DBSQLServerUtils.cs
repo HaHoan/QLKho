@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -15,11 +16,10 @@ namespace QLKho.Databases
             //
             // Data Source=umc-c551;Initial Catalog=QLKHO;Integrated Security=True
             //
-            string connString = @"Data Source=" + datasource + ";Initial Catalog="
-                        + database + ";Integrated Security=True";
-
-            SqlConnection conn = new SqlConnection(connString);
-
+            string connString = Helper.Decrypt(System.Configuration.ConfigurationManager.ConnectionStrings["QLKHOEntities"].ConnectionString, "umcvn");
+            var builder = new EntityConnectionStringBuilder(connString);
+            var regularConnectionString = builder.ProviderConnectionString;
+            SqlConnection conn = new SqlConnection(regularConnectionString);
             return conn;
         }
 
